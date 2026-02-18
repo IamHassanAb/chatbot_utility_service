@@ -1,28 +1,70 @@
 # Chatbot Utility Service
+![Python](https://img.shields.io/badge/Python-3.10-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-Framework-green)
+![LangChain](https://img.shields.io/badge/LangChain-Routing-orange)
+![FAISS](https://img.shields.io/badge/FAISS-VectorStore-purple)
+![OpenAI](https://img.shields.io/badge/OpenAI-LLM-black)
+![Status](https://img.shields.io/badge/Status-Demo%20Project-informational)
+![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-This project provides utility services for a chatbot application. It includes various helper functions and modules to enhance the chatbot's functionality and performance.
+A modular **prompt-routing service** that routes queries to specialized prompts for clearer, more specific LLM responses.
+Built to showcase a clean routing architecture using FastAPI + LangChain + FAISS.
+
+---
+
+## Overview
+
+This service demonstrates how structured routing strategies can improve chatbot responses by directing user queries through specialized prompt chains. It is designed as a lightweight, modular backend that developers can extend or integrate into their own LLM systems.
+
+**Primary goal:** demonstrate prompt routing architecture and modular LangChain chains.
+
+---
 
 ## Features
 
-- Easy integration with existing chatbot frameworks
-- Modular design for flexibility
-- Comprehensive documentation and examples
-- FastAPI for API endpoints
-- LangChain for language model integration
-- Routes, Chain, Output Parsers are used for a more robust response.
-- FAISS for vector store and document retrieval
+* Modular prompt routing architecture
+* FastAPI-based API service
+* LangChain routing, chains, and output parsers
+* FAISS vector store for retrieval
+* Chat message history support
+* Designed as a demo-ready, extensible backend
 
-## Installation
+---
 
-To install the necessary dependencies, run:
+## Tech Stack
+
+* FastAPI — API layer
+* LangChain — routing + chains
+* FAISS — embeddings / retrieval
+* OpenAI — LLM provider (currently only supported)
+
+---
+
+## Requirements
+
+* Python **3.10**
+* FAISS installed (native dependency)
+* OpenAI API key
+
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Usage
+---
 
-### FastAPI Endpoints
+## Configuration
+
+Create a `.env` file:
+
+```
+OPENAI_API_KEY=your_api_key_here
+```
+
+---
+
+## Running the API
 
 Start the FastAPI server:
 
@@ -30,82 +72,78 @@ Start the FastAPI server:
 uvicorn main:app --reload
 ```
 
-### Example Endpoints
+---
 
-- **Check Status**: `GET /check_status`
-- **Generate Vector**: `POST /generate_vector` currently under development
-- **Get Categories**: `GET /get_categories` currently under development
-- **Generate Response**: `POST /generate_response`
+## Available Endpoints
 
-### Importing Modules
+* `GET /check_status`
+* `POST /generate_response`
 
-Import the required modules and use the provided functions in your chatbot application:
+> Some endpoints in the codebase are experimental or under development.
 
-```python
-from utils.utils import generate_response_util
-from chains.preprocessing_chain import PreprocessingChain
-from chains.domain_analysis_chain import DomainAnalysisChain
-from chains.research_chain import ResearchOrchestrator
-from chains.general_chain import GeneralChain
-from chains.response_builer_chain import ResponseBuilder
-from chains.valiator_chain import ValidatorChain
-```
+---
 
-### Example Usage
+## Example Usage
 
 ```python
 from utils.utils import faiss_embeddings
-from langchain_community.vectorstores import FAISS
-from langchain_openai import OpenAIEmbeddings
 from entrypoint.mainChain import Chatbot
 
-
-# Generate response
 input_text = "What are the legal implications of breaking a contract?"
+
 bot = Chatbot(vector_store=faiss_embeddings)
 response = bot.chat(input_text)
 print(response)
 ```
 
+---
+
 ## Project Structure
 
 ```
-utility-services/
+chatbot_utility_service/
 ├── agents/
-│   ├── Agents.py
-│   └── __init__.py
-├── chains/
-│   ├── domain_analysis_chain.py
-│   ├── general_chain.py
-│   ├── preprocessing_chain.py
-│   ├── research_chain.py
-│   ├── response_builer_chain.py
-│   ├── valiator_chain.py
-│   └── __init__.py
-├── llms/
-│   ├── llms.py
-│   └── __init__.py
+├── chains/                # Routing + modular chains
+├── llms/                  # LLM integrations
+├── pds/                   # Data orchestration layers
+├── prompts/               # Prompt templates
+├── utils/
+│   ├── memory.py          # (experimental)
+│   ├── tools.py           # (experimental)
 ├── main.py
 ├── mainChain.py
-├── pds/
-│   ├── Analysis/AnalysisODS.py
-│   ├── BuildResponse/BuildResponseODS.py
-│   ├── Orchestration/OrchestrationODS.py
-│   ├── Preprocessing/PreprocessingODS.py
-│   ├── ResponseODS.py
-│   ├── Validation/ValidationODS.py
-│   └── __init__.py
-├── prompts/
-│   ├── templates.py
-│   └── __init__.py
-├── utils/
-│   ├── errors.py
-│   ├── memory.py (currently under development)
-│   ├── tools.py (currently under development)
-│   ├── utils.py
-│   └── __init__.py
-├── .gitignore
 ├── Procfile
-├── README.md
 └── requirements.txt
 ```
+
+---
+
+## Deployment
+
+This project has been deployed using **Railway** (example setup via Procfile).
+Other platforms should work with minimal changes.
+
+---
+
+## Limitations
+
+* OpenAI-only support (for now)
+* No automated tests
+* FAISS requires native installation
+* Some modules are experimental
+
+---
+
+## Future Improvements
+
+* Async processing and background workers
+* Redis / semantic caching for cost optimization
+* Multi-LLM provider support
+
+---
+
+## Author
+
+Built by **IamHassanAb** — open an issue for questions or feedback.
+* Write a **short portfolio version** tailored for recruiters
+* Generate a `.env.example` and polished repo metadata (description + tags)
